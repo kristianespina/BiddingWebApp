@@ -52,7 +52,7 @@ const ProductsPage = () => {
   const [bids, setBids] = useState();
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(0);
-  const [permissions, setPermissions] = useState({});
+  const [permissions, setPermissions] = useState({ isSeller: false });
   const [bidsData, setBidsData] = useState([]);
 
   const { id } = useParams();
@@ -130,6 +130,7 @@ const ProductsPage = () => {
 
     if (resp.status === 200) {
       setPermissions(resp.data);
+      console.log(resp.data);
     }
   };
   useEffect(() => {
@@ -179,6 +180,7 @@ const ProductsPage = () => {
 
   const handleSubmit = () => {
     postBid();
+    setOpen(false);
   };
   return (
     <div id="products">
@@ -248,14 +250,15 @@ const ProductsPage = () => {
             className="current-bids"
           >
             {bids &&
-              !permissions &&
+              permissions &&
+              permissions.isSeller === false &&
               bids.map((bid) => (
                 <p key={bid.bidId}>
                   Anonymous {randomAnimal()} placed a bid on{" "}
                   {product && product.name} on {moment(bid.datetime).fromNow()}
                 </p>
               ))}
-            {bidsData && permissions && (
+            {bidsData && permissions && permissions.isSeller === true && (
               <Table dataSource={bidsData} columns={columns} />
             )}
           </Card>

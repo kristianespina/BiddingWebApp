@@ -18,7 +18,7 @@ const ProductsListPage = () => {
         key: product.productId,
         name: product.name,
         actions: (
-          <Link to={"/product/" + product.productId}>
+          <Link to={"/products/" + product.productId}>
             <Button type="primary" className="place-bid" shape="round">
               View Product
             </Button>

@@ -75,15 +75,10 @@ class ProductsViewSet(viewsets.ModelViewSet):
             payload["seller"] = user.pk
             # payload["winningBid"] = None
             # payload["buyer"] = None
-            if payload["productId"] is not None:
+            serializer = ProductSerializer(data=payload)
 
-                prod = Product.objects.get(productId=payload["productId"])
-                serializer = ProductSerializer(prod)
-                print(serializer.is_valid())
-            else:
-                serializer = ProductSerializer(data=payload)
             if serializer.is_valid():
-                # serializer.save()
+                serializer.save()
                 resp = {"message": "Successful operation."}
                 return Response(resp)
             else:
@@ -118,6 +113,8 @@ class BidsViewSet(viewsets.ModelViewSet):
             committed_bid = Bids.objects.filter(
                 buyer=user, amount__isnull=False
             ).aggregate(Sum("amount"))
+            if committed_bid["amount__sum"] is None:
+                committed_bid["amount__sum"] = 0
             remaining_credits = credits[0] - committed_bid["amount__sum"]
 
             # Validate if within min and max bid:

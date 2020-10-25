@@ -61,7 +61,7 @@ const ManageProductsPage = () => {
     formData.append("maximumBid", payload.maximumBid);
     formData.append("expiration", payload.expiration);
     formData.append("description", payload.description);
-    formData.append("productId", id);
+    id && formData.append("productId", id);
     let url = process.env.REACT_APP_API_HOST + "/products/";
     const axiosRequest = id ? axios.patch : axios.post;
     const resp = await axiosRequest(url, formData, {
@@ -70,6 +70,13 @@ const ManageProductsPage = () => {
         Authorization: `JWT ${token}`,
       },
     });
+
+    if (resp.status === 200) {
+      message.success("Operation successful!");
+      history.push("/products");
+    } else {
+      message.error("Failed operation.");
+    }
   };
 
   const fetchProducts = async () => {
