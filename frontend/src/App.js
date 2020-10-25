@@ -121,24 +121,16 @@ function App() {
               }}
             >
               <Switch>
-                <Route path="/login">
-                  <LoginPage />
-                </Route>
-                <Route path="/product/:id">
-                  <ProductsPage />
-                </Route>
-                <Route path="/products">
-                  <ProductsListPage />
-                </Route>
-                <Route path="/bids">
-                  <BidsPage />
-                </Route>
-                <Route path="/user">
-                  <UserPage />
-                </Route>
-                <Route path="/manageProducts/:id?">
-                  <ManageProductsPage />
-                </Route>
+                <Route exact path="/" component={ProductsListPage} />
+                <Route path="/login" component={LoginPage} />
+                <Route path="/products/:id" component={ProductsPage} />
+                <Route path="/products" component={ProductsListPage} />
+                <Route path="/bids" component={BidsPage} />
+                <Route path="/user" component={UserPage} />
+                <Route
+                  path="/manageProducts/:id?"
+                  component={ManageProductsPage}
+                />
               </Switch>
             </Content>
           </Layout>
