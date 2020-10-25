@@ -1,11 +1,13 @@
 from django.contrib.auth.models import User, Group
 
 from django_filters import rest_framework as filters
+from django.core import serializers
 from rest_framework import viewsets, permissions, generics, status
 from .serializers import (
     UserSerializer,
     GroupSerializer,
     ProductSerializer,
+    ProductPostSerializer,
     BidsSerializer,
 )
 from .models import Product, Bids, Credits
@@ -50,6 +52,43 @@ class ProductsViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ["productId", "seller", "expiration"]
+
+    # PATCH
+    def patch(self, request, pk=None):
+        payload = request.data
+
+        instance = Product.objects.get(
+            productId=payload["productId"], seller=request.user
+        )
+        serializer = self.serializer_class(instance, data=payload, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def create(self, request):
+        user = request.user
+        if not user.is_staff:
+            resp = {"message": "Unauthorized"}
+            return Response(resp, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            payload = request.data
+            payload["seller"] = user.pk
+            # payload["winningBid"] = None
+            # payload["buyer"] = None
+            if payload["productId"] is not None:
+
+                prod = Product.objects.get(productId=payload["productId"])
+                serializer = ProductSerializer(prod)
+                print(serializer.is_valid())
+            else:
+                serializer = ProductSerializer(data=payload)
+            if serializer.is_valid():
+                # serializer.save()
+                resp = {"message": "Successful operation."}
+                return Response(resp)
+            else:
+                resp = {"message": "Failed operation"}
+                return Response(resp, status=status.HTTP_400_BAD_REQUEST)
 
 
 class BidsViewSet(viewsets.ModelViewSet):
@@ -247,14 +286,13 @@ class Statistics(APIView):
         if user.is_staff:
             # Products by seller
             products = Product.objects.filter(seller=user)
-            done_products = Product.objects.filter(
-                seller=user, expiration__lte=today, buyer__isnull=False
-            )
+            done_products = Product.objects.filter(seller=user, buyer__isnull=False)
             bids = Bids.objects.filter(productId__in=products)
             num_products = products.count()
             num_bids = bids.filter(datetime__gte=today, productId__in=products).count()
             num_done_deals = done_products.count()
-            num_earnings = Bids.objects.filter(productId__in=done_products).aggregate(
+            successful_bids = Product.objects.filter(winningBid__isnull=False)
+            num_earnings = Bids.objects.filter(bidId__in=successful_bids).aggregate(
                 Sum("amount")
             )
             # Potential earnings

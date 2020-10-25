@@ -58,6 +58,20 @@ class ProductSerializer(serializers.ModelSerializer):
         ]
 
 
+class ProductPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = [
+            "seller",
+            "name",
+            "photo",
+            "minimumBid",
+            "maximumBid",
+            "expiration",
+            "description",
+        ]
+
+
 class BidsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bids

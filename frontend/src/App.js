@@ -24,6 +24,7 @@ import ProductsPage from "./pages/products";
 import ProductsListPage from "./pages/productsList";
 import BidsPage from "./pages/bids";
 import UserPage from "./pages/user";
+import ManageProductsPage from "./pages/manageProducts";
 
 function App() {
   let history = useHistory();
@@ -47,9 +48,14 @@ function App() {
             <div className="logo" />
             <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
               {token && (
-                <Menu.Item key="1" icon={<UserOutlined />}>
-                  <Link to="/user">View Profile</Link>
-                </Menu.Item>
+                <>
+                  <Menu.Item key="1" icon={<UserOutlined />}>
+                    <Link to="/user">View Profile</Link>
+                  </Menu.Item>
+                  <Menu.Item key="addProduct" icon={<UserOutlined />}>
+                    <Link to="/manageProducts">Manage Products</Link>
+                  </Menu.Item>
+                </>
               )}
 
               <Menu.Item key="2" icon={<VideoCameraOutlined />}>
@@ -109,6 +115,9 @@ function App() {
                 </Route>
                 <Route path="/user">
                   <UserPage />
+                </Route>
+                <Route path="/manageProducts/:id?">
+                  <ManageProductsPage />
                 </Route>
               </Switch>
             </Content>

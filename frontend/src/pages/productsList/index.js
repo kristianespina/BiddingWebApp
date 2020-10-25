@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 
-import { Table, Tag, Button } from "antd";
+import { Table, Button } from "antd";
 
 import callApi from "../../utils/callApi";
 
