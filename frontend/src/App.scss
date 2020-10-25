@@ -1,0 +1,38 @@
+@import "~antd/dist/antd.css";
+.App {
+  height: 100vh;
+  //display: grid;
+  //grid-template-columns: 50px auto;
+  //grid-template-areas: "sidebar content";
+  .trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .trigger:hover {
+    color: #1890ff;
+  }
+  .ant-layout-has-sider {
+    min-height: 100vh;
+  }
+  .logo {
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 16px;
+  }
+
+  .site-layout .site-layout-background {
+    background: #fff;
+  }
+}
+.sidebar {
+  grid-area: sidebar;
+  background-color: #003a8c;
+}
+
+.content {
+  grid-area: content;
+}

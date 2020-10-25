@@ -1,0 +1,55 @@
+#products {
+  height: 100%;
+  .content {
+    margin: 0 auto;
+    //background-color: black;
+    //max-width: 1280px;
+    //min-height: 100vh;
+    height: 100%;
+    display: grid;
+    grid-template-areas: "product details";
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: auto;
+    .product {
+      grid-area: product;
+      display: flex;
+      flex-direction: column;
+      //background-color: gray;
+      //padding: 2rem;
+      h1 {
+        font-size: 1.5rem;
+      }
+      .product-image {
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+      .product-name {
+        margin: 0;
+        text-align: center;
+      }
+      .product-details {
+        text-align: center;
+      }
+      .actions {
+        margin-bottom: 2rem;
+        text-align: center;
+        button {
+          height: 2.5rem;
+        }
+      }
+    }
+    .details {
+      grid-area: details;
+      //background-color: yellow;
+      //padding: 2rem;
+      padding-left: 1rem;
+    }
+
+    .current-bids {
+      .ant-card-body {
+        //max-height: 200px;
+        overflow-y: auto;
+      }
+    }
+  }
+}

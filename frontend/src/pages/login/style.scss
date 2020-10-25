@@ -1,0 +1,10 @@
+#login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 3rem;
+  .wrapper {
+    max-width: 500px;
+  }
+}
