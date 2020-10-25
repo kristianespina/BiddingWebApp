@@ -199,8 +199,11 @@ const ProductsPage = () => {
                 className="place-bid"
                 shape="round"
                 onClick={handlePlaceBid}
+                disabled={product && product.winningBid ? true : false}
               >
-                Place Bid
+                {product && product.winningBid
+                  ? "Bidding Expired"
+                  : "Place Bid"}
               </Button>
             )}
           </div>

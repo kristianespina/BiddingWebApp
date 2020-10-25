@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { Table, Avatar, Statistic, Row, Col, Button } from "antd";
+import { Avatar, Statistic, Row, Col } from "antd";
 import { AntDesignOutlined } from "@ant-design/icons";
 import callApi from "../../utils/callApi";
 
@@ -10,7 +10,7 @@ const UserPage = () => {
   const token = sessionStorage.getItem("token");
   const [role, setRole] = useState(false);
   const [statistics, setStatistics] = useState({});
-  const [dataSource, setDataSource] = useState([]);
+
   const fetchRole = async () => {
     const resp = await callApi("/role/", "GET", {}, token);
     if (resp.status === 200) {
@@ -25,75 +25,14 @@ const UserPage = () => {
     }
   };
 
-  const fetchBids = async () => {
-    const resp = await callApi("/mybids", "GET", {}, token);
-    console.log(resp);
-    if (resp.status === 200) {
-      const tableSrc = resp.data.map((bid) => ({
-        key: bid.datetime,
-        name: bid.productName,
-        timestamp: bid.datetime,
-        amount: bid.amount,
-        status: bid.status,
-      }));
-      setDataSource(tableSrc);
-    }
-    /*
-    if (resp.status === 200) {
-      setBids(resp.data);
-      const tableSrc = resp.data.map((bid) => ({
-        key: bid.datetime,
-        timestamp: bid.datetime,
-        amount: bid.amount,
-        actions: (
-          <Button
-            block
-            className="place-bid"
-            shape="round"
-            onClick={() => handleAwardBid(bid.bidId)}
-            disabled={product && product.winningBid ? true : false}
-          >
-            Award Bid
-          </Button>
-        ),
-      }));
-      setBidsData(tableSrc);
-    }
-    */
-  };
-
   useEffect(() => {
     if (!token) {
       history.push("/login");
     } else {
       fetchRole();
       fetchStatistics();
-      fetchBids();
     }
   }, []);
-
-  const columns = [
-    {
-      title: "Timestamp",
-      dataIndex: "timestamp",
-      key: "timestamp",
-    },
-    {
-      title: "Product Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Amount",
-      dataIndex: "amount",
-      key: "amount",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-    },
-  ];
 
   return (
     <div id="user">
@@ -149,7 +88,6 @@ const UserPage = () => {
               />
             </Col>
           </Row>
-          <Table dataSource={dataSource} columns={columns} />
         </>
       )}
 
