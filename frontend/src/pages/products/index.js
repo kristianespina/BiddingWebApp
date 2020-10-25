@@ -52,7 +52,7 @@ const ProductsPage = () => {
   const [bids, setBids] = useState();
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(0);
-  const [permissions, setPermissions] = useState(false);
+  const [permissions, setPermissions] = useState({});
   const [bidsData, setBidsData] = useState([]);
 
   const { id } = useParams();
@@ -129,7 +129,7 @@ const ProductsPage = () => {
     );
 
     if (resp.status === 200) {
-      setPermissions(resp.data.isSeller);
+      setPermissions(resp.data);
     }
   };
   useEffect(() => {
@@ -192,7 +192,8 @@ const ProductsPage = () => {
             a container that coffee and espresso-based drinks are served in
           </p>*/}
           <div class="actions">
-            {!permissions && (
+            {console.log(permissions)}
+            {permissions && permissions.isSeller === false && (
               <Button
                 type="primary"
                 block
@@ -204,6 +205,11 @@ const ProductsPage = () => {
                 {product && product.winningBid
                   ? "Bidding Expired"
                   : "Place Bid"}
+              </Button>
+            )}
+            {permissions && product && permissions.userId === product.seller && (
+              <Button type="primary" block className="place-bid" shape="round">
+                Edit Product Details
               </Button>
             )}
           </div>

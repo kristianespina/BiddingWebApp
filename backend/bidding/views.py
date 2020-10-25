@@ -216,7 +216,7 @@ class ProductPermission(APIView):
             0
         ]
 
-        resp = {"isSeller": int(user.pk) == int(productSeller)}
+        resp = {"isSeller": int(user.pk) == int(productSeller), "userId": user.pk}
 
         return Response(resp)
 

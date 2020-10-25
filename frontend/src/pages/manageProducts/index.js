@@ -94,8 +94,12 @@ const ManageProductsPage = () => {
   };
 
   useEffect(() => {
-    if (id) {
-      fetchProducts();
+    if (!token) {
+      history.push("/login");
+    } else {
+      if (id) {
+        fetchProducts();
+      }
     }
   }, []);
 

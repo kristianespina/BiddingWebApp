@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -26,11 +26,22 @@ import BidsPage from "./pages/bids";
 import UserPage from "./pages/user";
 import ManageProductsPage from "./pages/manageProducts";
 
+import callApi from "./utils/callApi";
+
 function App() {
   let history = useHistory();
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useState(false);
   const [token, setToken] = useState(sessionStorage.getItem("token"));
+  const [role, setRole] = useState(false);
+
+  const fetchRole = async () => {
+    const resp = await callApi("/role/", "GET", {}, token);
+    if (resp.status === 200) {
+      setRole(resp.data.role);
+    }
+  };
+
   const toggle = () => {
     setCollapsed(!collapsed);
   };
@@ -40,6 +51,13 @@ function App() {
     setToken();
     window.location.reload(false);
   };
+
+  useEffect(() => {
+    if (token) {
+      fetchRole();
+    }
+  }, []);
+
   return (
     <Router>
       <div className="App">
@@ -52,9 +70,11 @@ function App() {
                   <Menu.Item key="1" icon={<UserOutlined />}>
                     <Link to="/user">View Profile</Link>
                   </Menu.Item>
-                  <Menu.Item key="addProduct" icon={<UserOutlined />}>
-                    <Link to="/manageProducts">Manage Products</Link>
-                  </Menu.Item>
+                  {role && (
+                    <Menu.Item key="addProduct" icon={<UserOutlined />}>
+                      <Link to="/manageProducts">Manage Products</Link>
+                    </Menu.Item>
+                  )}
                 </>
               )}
 
