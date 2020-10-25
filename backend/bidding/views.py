@@ -335,7 +335,7 @@ class Statistics(APIView):
             return Response(
                 {
                     "credits": credits,
-                    "commited": committed_bid,
+                    "committed": committed_bid,
                     "spent": spent_credits,
                     "bidsCount": num_bids,
                     "bidsWon": winning_bids,
